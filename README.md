@@ -11,8 +11,8 @@ This works in pages of markdown file, issue, pull request and wiki.
 ## Build
 
 ```sh
-$ yarn install
-$ yarn run build
+$ npm install
+$ npm run build
 ```
 
 The artifacts is built in web-ext-artifacts/firefox and web-ext-artifacts/chrome directory.
