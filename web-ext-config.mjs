@@ -1,16 +1,18 @@
 const ignoreFiles = process.env.TARGET == 'firefox' ? ['background'] : [];
 
-module.exports = {
+export default {
   build: {
     overwriteDest: true,
   },
   ignoreFiles: [
     ...ignoreFiles,
-    'web-ext-config.js',
+    'web-ext-config.mjs',
     'scripts',
     'manifests',
+    'mise.toml',
     'README.md',
     'package.json',
+    'package-lock.json',
     'yarn.lock',
     'web-ext-artifacts',
   ],

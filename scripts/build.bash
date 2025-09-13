@@ -22,4 +22,4 @@ esac
 
 cp ${project_dir}/manifests/manifest.${target}.json ${project_dir}/manifest.json
 cp ${project_dir}/node_modules/webextension-polyfill/dist/browser-polyfill.min.js ${project_dir}
-npx web-ext build -c ${project_dir}/web-ext-config.js --artifacts-dir ${project_dir}/web-ext-artifacts/${target}
+npx web-ext build -c ${project_dir}/web-ext-config.mjs --artifacts-dir ${project_dir}/web-ext-artifacts/${target}

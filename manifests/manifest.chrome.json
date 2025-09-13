@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "github-toc",
   "version": "0.1.1",
   "description": "Show the table of contents in github and make it possible to jump to headings.",
@@ -8,15 +8,15 @@
     "96": "icons/icon-96.png",
     "128": "icons/icon-128.png"
   },
-  "permissions": ["activeTab", "declarativeContent"],
-  "page_action": {
+  "permissions": ["activeTab", "declarativeContent", "scripting"],
+  "action": {
     "default_icon": "icons/icon-48.png",
     "default_title": "GitHub TOC",
     "default_popup": "popup/index.html",
     "show_matches": ["https://github.com/*"]
   },
   "background": {
-    "scripts": ["background/chrome/index.js"],
-    "persistent": false
+    "service_worker": "background/chrome/index.js",
+    "type": "module"
   }
 }
