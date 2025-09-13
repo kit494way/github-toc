@@ -4,7 +4,7 @@
   "author": "KITAGAWA Yasutaka <kit494way@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "yarn run build:firefox && yarn run build:chrome",
+    "build": "npm run build:firefox && npm run build:chrome",
     "build:firefox": "env TARGET=firefox ./scripts/build.bash firefox",
     "build:chrome": "./scripts/build.bash chrome",
     "clean": "rm -fr ./web-ext-artifacts/*"

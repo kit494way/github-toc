@@ -1,4 +1,4 @@
-(function() {
+(async () => {
   function createToc(headings) {
     const toc = document.createElement('div');
     toc.setAttribute('id', 'toc');
@@ -35,9 +35,20 @@
       .catch(alert);
   }
 
-  browser.tabs.executeScript({ file: '/browser-polyfill.min.js' });
-  browser.tabs
-    .executeScript({ file: '/content_scripts/index.js' })
-    .then(getHeadings)
-    .catch(alert);
+  try {
+    const tabs = await browser.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+    const tabId = tabs[0].id;
+
+    await browser.scripting.executeScript({
+      files: ['/browser-polyfill.min.js', '/content_scripts/index.js'],
+      target: { tabId },
+    });
+
+    await getHeadings();
+  } catch (error) {
+    alert(error);
+  }
 })();
