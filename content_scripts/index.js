@@ -1,34 +1,19 @@
-(function() {
+(() => {
   if (window.ghTocHasRun) {
     return;
   }
   window.ghTocHasRun = true;
 
   const selectors = [
-    // selectors for markdown file
-    '.markdown-body.entry-content h1',
-    '.markdown-body.entry-content h2',
-    '.markdown-body.entry-content h3',
-    '.markdown-body.entry-content h4',
-    '.markdown-body.entry-content h5',
-    '.markdown-body.entry-content h6',
-
-    // selectors for issue or pull request
-    '.comment .comment-body h1',
-    '.comment .comment-body h2',
-    '.comment .comment-body h3',
-    '.comment .comment-body h4',
-    '.comment .comment-body h5',
-    '.comment .comment-body h6',
-
-    // selectors for wiki
     'h1.gh-header-title',
-    '#wiki-body h1',
-    '#wiki-body h2',
-    '#wiki-body h3',
-    '#wiki-body h4',
-    '#wiki-body h5',
-    '#wiki-body h6',
+    'div[aria-label="Header"] h1', // issue title
+    'div[aria-label="Header"] h2', // issue title in project view
+    '.markdown-body h1',
+    '.markdown-body h2',
+    '.markdown-body h3',
+    '.markdown-body h4',
+    '.markdown-body h5',
+    '.markdown-body h6',
   ];
 
   function getHeadings() {
@@ -38,34 +23,61 @@
       const heading = hs[i];
       headings.push({
         tagName: heading.tagName,
-        text: heading.innerText,
+        // issue title in project view contains a line break
+        text: heading.innerText.replace(/\n/, ' '),
       });
     }
 
     return headings;
   }
 
+  /**
+   * @param {HTMLElement} heading
+   */
   function scrollToHeading(heading) {
+    console.log('scrollToHeading');
     const rect = heading.getBoundingClientRect();
-    const ghHeader = document.getElementsByClassName('gh-header-shadow');
-    if (ghHeader.length) {
-      const ghHeaderHeight = 60;
-      window.scrollBy(0, rect.top - ghHeaderHeight);
-    } else {
+    const path_elems = window.location.pathname.split('/').slice(1);
+    const query = new URLSearchParams(window.location.search);
+    if (path_elems.length === 2 || path_elems[2] === 'tree') {
+      // README
+      window.scrollBy(0, rect.top - 48);
+    } else if (path_elems[2] === 'issues') {
+      if (heading.querySelector('.markdown-title')) {
+        window.scroll(0, 0);
+      } else {
+        heading.style.scrollMarginTop = '56px';
+        heading.scrollIntoView();
+      }
+    } else if (path_elems[2] === 'projects' && query.get('pane') === 'issue') {
+      if (!heading.querySelector('.markdown-title')) {
+        heading.style.scrollMarginTop = '56px';
+      }
+      heading.scrollIntoView();
+    } else if (path_elems[2] === 'pull') {
+      if (heading.classList.contains('gh-header-title')) {
+        window.scroll(0, 0);
+      } else {
+        heading.style.scrollMarginTop = '60px';
+        heading.scrollIntoView();
+      }
+    } else if (path_elems[2] === 'wiki') {
       window.scrollBy(0, rect.top);
+    } else if (path_elems[2] === 'blob' && document.getElementById('repos-sticky-header')) {
+      // markdown file
+      window.scrollBy(0, rect.top - 94);
     }
   }
 
-  browser.runtime.onMessage.addListener(
-    async (message, sender, sendResponse) => {
-      switch (message.command) {
-        case 'getHeadings':
-          return getHeadings();
-        case 'scrollToHeading':
-          const hs = document.querySelectorAll(selectors);
-          scrollToHeading(hs[message.index]);
-          break;
+  browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+    switch (message.command) {
+      case 'getHeadings':
+        return getHeadings();
+      case 'scrollToHeading': {
+        const hs = document.querySelectorAll(selectors);
+        scrollToHeading(hs[message.index]);
+        break;
       }
     }
-  );
+  });
 })();
