@@ -30,9 +30,7 @@
       active: true,
       currentWindow: true,
     });
-    browser.tabs
-      .sendMessage(tabs[0].id, { command: 'scrollToHeading', index: index })
-      .catch(alert);
+    browser.tabs.sendMessage(tabs[0].id, { command: 'scrollToHeading', index: index }).catch(alert);
   }
 
   try {
