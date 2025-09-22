@@ -37,7 +37,7 @@
   function scrollToHeading(heading) {
     console.log('scrollToHeading');
     const rect = heading.getBoundingClientRect();
-    const path_elems = window.location.pathname.split('/').slice(1);
+    const path_elems = window.location.pathname.split('/').filter((x) => x);
     const query = new URLSearchParams(window.location.search);
     if (path_elems.length === 2 || path_elems[2] === 'tree') {
       // README
