@@ -69,7 +69,7 @@
     }
   }
 
-  browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+  browser.runtime.onMessage.addListener(async (message, _sender, _sendResponse) => {
     switch (message.command) {
       case 'getHeadings':
         return getHeadings();
