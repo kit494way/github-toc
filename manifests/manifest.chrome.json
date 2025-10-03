@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "github-toc",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Show the table of contents in github and make it possible to jump to headings.",
   "icons": {
     "48": "icons/icon-48.png",
