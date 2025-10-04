@@ -13,5 +13,13 @@
     "default_title": "GitHub TOC",
     "default_popup": "popup/index.html",
     "show_matches": ["https://github.com/*"]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "@github-toc.kit494way",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
   }
 }
